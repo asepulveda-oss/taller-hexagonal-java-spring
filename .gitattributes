@@ -1,0 +1,3 @@
+# mvnw es un script de shell: con CRLF no corre en Linux/macOS.
+mvnw text eol=lf
+*.cmd text eol=crlf

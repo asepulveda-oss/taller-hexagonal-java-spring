@@ -1,0 +1,14 @@
+target/
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# La base SQLite se crea sola al arrancar la API (schema.sql). No se versiona:
+# es un artefacto, no código fuente.
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
