@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  reservas-application · casos de uso. Depende solo de reservas-domain: sin
-  spring-context, así que no hay @Service; el host los registra con @Bean.
+  reservas-api · CLASE 3 · EL HOST
+
+  El único módulo que conoce a todos los demás, y el único que puede. Su trabajo
+  es exactamente dos cosas:
+
+    1. CABLEAR   · decidir qué implementación concreta recibe cada puerto
+                   (BeansConfig)
+    2. TRADUCIR  · convertir HTTP en llamadas a los casos de uso, y de vuelta
+                   (ReservaController, ManejadorDeErrores)
+
+  Es también el único módulo que se empaqueta como aplicación ejecutable: el
+  spring-boot-maven-plugin vive acá y en ningún otro pom.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -14,19 +24,48 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>reservas-application</artifactId>
-    <name>reservas-application</name>
+    <artifactId>reservas-api</artifactId>
+    <name>reservas-api</name>
+
+    <properties>
+        <!-- El pom padre apaga spring-boot:run en todos los módulos; acá se prende. -->
+        <spring-boot.run.skip>false</spring-boot.run.skip>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>cl.dasacademy.reservas</groupId>
-            <artifactId>reservas-domain</artifactId>
+            <artifactId>reservas-infrastructure</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- Para @Valid y @NotNull en el request: el adaptador valida la FORMA. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <!-- Swagger UI en /swagger-ui.html -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

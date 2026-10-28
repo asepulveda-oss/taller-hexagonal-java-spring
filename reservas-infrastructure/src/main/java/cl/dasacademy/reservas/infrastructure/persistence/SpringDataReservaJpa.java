@@ -1,0 +1,10 @@
+package cl.dasacademy.reservas.infrastructure.persistence;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface SpringDataReservaJpa extends JpaRepository<ReservaJpaEntity, String> {
+
+    List<ReservaJpaEntity> findBySalaIdOrderByInicioAsc(String salaId);
+}

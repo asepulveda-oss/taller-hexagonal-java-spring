@@ -1,68 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  reservas · POM PADRE (esqueleto vacío)
-
-  Solo declara los módulos y fija versiones. Las dependencias apuntan hacia adentro
-  y las verifica el build:
-
-      reservas-api ──► reservas-infrastructure ──► reservas-application ──► reservas-domain ──► (nadie)
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.16</version>
-        <relativePath/>
+        <groupId>cl.dasacademy.reservas</groupId>
+        <artifactId>reservas</artifactId>
+        <version>1.0.0</version>
     </parent>
 
-    <groupId>cl.dasacademy.reservas</groupId>
-    <artifactId>reservas</artifactId>
-    <version>1.0.0</version>
-    <packaging>pom</packaging>
-    <name>reservas</name>
-    <description>Taller Introducción a la Arquitectura Hexagonal con Spring Boot · DAS Academy</description>
+    <artifactId>reservas-infrastructure</artifactId>
+    <name>reservas-infrastructure</name>
 
-    <modules>
-        <module>reservas-domain</module>
-        <module>reservas-application</module>
-        <module>reservas-infrastructure</module>
-        <module>reservas-api</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>cl.dasacademy.reservas</groupId>
+            <artifactId>reservas-application</artifactId>
+        </dependency>
 
-    <properties>
-        <java.version>21</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springdoc.version>2.8.17</springdoc.version>
-        <!-- Solo reservas-api tiene clase main: se apaga acá y se prende en su pom. -->
-        <spring-boot.run.skip>true</spring-boot.run.skip>
-    </properties>
+        <!-- ── Clase 3: la base de datos ── -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-community-dialects</artifactId>
+        </dependency>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>cl.dasacademy.reservas</groupId>
-                <artifactId>reservas-domain</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cl.dasacademy.reservas</groupId>
-                <artifactId>reservas-application</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cl.dasacademy.reservas</groupId>
-                <artifactId>reservas-infrastructure</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-                <version>${springdoc.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+        <!-- spring-boot-starter-test trae JUnit 5 y además @DataJpaTest, que solo
+             usan los dos tests de los adaptadores de base de datos. Todos los demás
+             tests de este módulo son JUnit puro. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
